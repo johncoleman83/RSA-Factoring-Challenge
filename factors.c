@@ -67,10 +67,11 @@ void *_calloc(unsigned int nmemb, unsigned int size)
  *
  * Return: 0 always Success
  */
-char **_split(char *buffer)
+int *_split(char *buffer)
 {
-	int i = 0, l = 0;
+	int i = 0, j = 0, l = 0;
 	char **numbers;
+	char *num;
 
 	while (buffer[i] != '\0')
 	{
@@ -78,10 +79,18 @@ char **_split(char *buffer)
 			l++;
 		i++;
 	}
-	numbers = _calloc(l, sizeof(char*));
+	numbers = _calloc(l, sizeof(int));
 	i = 0;
 	while (buffer[i] != '\0')
 	{
+		for(j = 0; buffer[i] != '\n'; j++)
+			;
+		i = j + 1;
+		num = _calloc(j, sizeof(int));
+		for(j = 0; buffer[j] != '\n'; j++)
+			;
+
+		
 	}
 
 }
@@ -95,7 +104,8 @@ char **_split(char *buffer)
  */
 int main(int argc, char **argv)
 {
-	char *filename = argv[1], *buffer, **numbers;
+	char *filename = argv[1], *buffer;
+	int *numbers;
 
 	buffer = _calloc(BUFSIZE, sizeof(char));
 	read_textfile(filename, buffer);
