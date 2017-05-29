@@ -3,11 +3,23 @@ from sys import argv
 from math import sqrt
 from time import time
 from itertools import count, islice
+import multiprocessing
+
+
+def is_prime(n):
+    return n > 1 and all((n % i) for i in islice(count(2), int(sqrt(n) - 1)))
+
+
+def initialize_process(n):
+    first = multiprocessing.Process(target=factorize, args=(n,))
+    second = multiprocessing.Process(target=factorize_zero, args=(n,))
+    return [first, second]
+
 
 def factorize_zero(n):
     sq = int(sqrt(n) + 2)
-    for i in range(2, sq, 1):
-        if (int(n / i) == (n / i)):
+    for i in range(2, sq):
+        if (n % i == 0):
             print("{:d}={:d}*{:d}".format(n, i, int(n / i)))
             break;
         if (i == sq):
@@ -18,7 +30,7 @@ def factorize_zero(n):
 def factorize(n):
     sq = int(sqrt(n) + 1)
     for i in range(sq, 0, -1):
-        if (int(n / i) == (n / i)):
+        if n % i == 0:
             print("{:d}={:d}*{:d}".format(n, i, int(n / i)))
             break;
 
@@ -27,8 +39,16 @@ def main():
     fd = open(argv[1], 'r')
     file_lines = fd.readlines()
     fd.close()
+    num_lines = len(file_lines)
+    running = []
     for line in file_lines:
-        factorize(int(line))
+        running.append(initialize_process(int(line)))
+    for p in running:
+        p[0].start()
+        p[1].start()
+    for p in running:
+        p[0].join()
+        p[1].join()
 
 
 """start_t = time()
