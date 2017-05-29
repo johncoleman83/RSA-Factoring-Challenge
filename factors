@@ -24,16 +24,16 @@ def factorize(n):
 
 
 def main():
-    start_t = time()
     fd = open(argv[1], 'r')
     file_lines = fd.readlines()
     fd.close()
     for line in file_lines:
         factorize(int(line))
-    end_t = time()
 
 
-"""print("Time to run =", (end_t - start_t))"""
+"""start_t = time()
+print("Time to run =", (end_t - start_t))
+end_t = time()"""
 
 
 if __name__ == "__main__":
