@@ -2,7 +2,7 @@
 from sys import argv
 from math import sqrt
 from time import time
-
+from itertools import count, islice
 
 def factorize_zero(n):
     sq = int(sqrt(n) + 2)
@@ -31,7 +31,9 @@ def main():
     for line in file_lines:
         factorize(int(line))
     end_t = time()
-    print("Time to run =", (end_t - start_t))
+
+
+"""print("Time to run =", (end_t - start_t))"""
 
 
 if __name__ == "__main__":
