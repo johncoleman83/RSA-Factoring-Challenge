@@ -24,8 +24,10 @@ def factorize(start, R, n):
 
 def initialize_process(n):
     SQR = int(sqrt(n)) - 1
-    if not is_prime(n):
-        return multiprocessing.Process(target=factorize, args=(2, SQR, n))
+    running = []
+    running.append(multiprocessing.Process(target=factorize_prime, args=(n, )))
+    running.append(multiprocessing.Process(target=factorize, args=(2, SQR, n)))
+    return running
 
 
 def main():
@@ -38,10 +40,12 @@ def main():
     running = []
     for line in file_lines:
         running.append(initialize_process(int(line)))
-    for p in running:
-        p.start()
-    for p in running:
-        p.join()
+    for jobs in running:
+        for p in jobs:
+            p.start()
+    for jobs in running:
+        for p in jobs:
+            p.join()
     end_t = time()
     print("Time to run =", (end_t - start_t))
 
