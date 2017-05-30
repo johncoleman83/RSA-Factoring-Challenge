@@ -16,7 +16,6 @@ def factorize_prime(n):
 
 
 def factorize(start, R, n):
-    """for i in range(start, sq):"""
     for i in islice(count(start), R):
         if (n % i == 0):
             print("{:d}={:d}*{:d}".format(n, int(n / i), i))
@@ -25,10 +24,8 @@ def factorize(start, R, n):
 
 def initialize_process(n):
     SQR = int(sqrt(n)) - 1
-    running = []
-    running.append(multiprocessing.Process(target=prime_factorization,
-                                           args=(2, SQR, n)))
-    return running
+    if not is_prime(n):
+        return multiprocessing.Process(target=factorize, args=(2, SQR, n))
 
 
 def main():
@@ -41,12 +38,10 @@ def main():
     running = []
     for line in file_lines:
         running.append(initialize_process(int(line)))
-    for sublist in running:
-        for p in sublist:
-            p.start()
-    for sublist in running:
-        for p in sublist:
-            p.join()
+    for p in running:
+        p.start()
+    for p in running:
+        p.join()
     end_t = time()
     print("Time to run =", (end_t - start_t))
 
