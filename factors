@@ -12,23 +12,23 @@ def is_prime(n):
 
 def factorize_prime(n):
     if is_prime(n):
-        print("{:d}={:d}*{:d}".format(n, 1, n))
+        print("{:d}={:d}*{:d}".format(n, n, 1))
 
 def factorize(start, n):
     sq = int(sqrt(n) + 2)
     for i in range(start, sq):
         if (n % i == 0):
-            print("{:d}={:d}*{:d}".format(n, i, int(n / i)))
+            print("{:d}={:d}*{:d}".format(n, int(n / i), i))
             break;
         if (i == sq):
-            print("{:d}={:d}*{:d}".format(n, 1, n))
+            print("{:d}={:d}*{:d}".format(n, n, 1))
             break
 
 
 def factorize_reverse(end, n):
     for i in range(end, 0, -1):
         if n % i == 0:
-            print("{:d}={:d}*{:d}".format(n, i, int(n / i)))
+            print("{:d}={:d}*{:d}".format(n, int(n / i), i))
             break;
 
 
