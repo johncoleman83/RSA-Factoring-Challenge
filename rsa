@@ -10,17 +10,13 @@ def is_prime(n):
     return n > 1 and all((n % i) for i in islice(count(2), int(sqrt(n) - 1)))
 
 
-def factorize_prime(n):
-    if is_prime(n):
-        print("{:d}={:d}*{:d}".format(n, n, 1))
-
-
-def factorize(start, R, n):
+def prime_factorization(start, R, n):
     """for i in range(start, sq):"""
     for i in islice(count(start), R):
-        if (n % i == 0):
-            print("{:d}={:d}*{:d}".format(n, int(n / i), i))
-            break;
+        if (is_prime(i)):
+            if (n % i == 0):
+                print("{:d}={:d}*{:d}".format(n, int(n / i), i))
+                break;
 
 
 def initialize_process(n):
