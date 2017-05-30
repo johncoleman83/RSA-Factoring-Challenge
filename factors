@@ -10,15 +10,9 @@ def is_prime(n):
     return n > 1 and all((n % i) for i in islice(count(2), int(sqrt(n) - 1)))
 
 
-def initialize_process(n):
-    sq = (int(sqrt(n) + 1))
-    first = multiprocessing.Process(target=factorize_reverse, args=(sq, n))
-    second = multiprocessing.Process(target=factorize_reverse,
-                                     args=(int(sq / 2), n))
-    third = multiprocessing.Process(target=factorize, args=(2, n))
-    fourth = multiprocessing.Process(target=factorize, args=(int(n / 2), n))
-    return [first, second, third]
-
+def factorize_prime(n):
+    if is_prime(n):
+        print("{:d}={:d}*{:d}".format(n, 1, n))
 
 def factorize(start, n):
     sq = int(sqrt(n) + 2)
@@ -38,11 +32,23 @@ def factorize_reverse(end, n):
             break;
 
 
+def initialize_process(n):
+    sq = (int(sqrt(n) + 1))
+    first = multiprocessing.Process(target=factorize_reverse, args=(sq, n))
+    second = multiprocessing.Process(target=factorize_reverse,
+                                     args=(int(sq / 2), n))
+    third = multiprocessing.Process(target=factorize, args=(2, n))
+    fourth = multiprocessing.Process(target=factorize, args=(int(sq / 2), n))
+    fifth = multiprocessing.Process(target=factorize_prime, args=(n, ))
+    return [first, second, third, fourth, fifth]
+
+
 def main():
     fd = open(argv[1], 'r')
     file_lines = fd.readlines()
     fd.close()
     num_lines = len(file_lines)
+    file_lines = sorted(file_lines, key=lambda x: len(x))
     running = []
     for line in file_lines:
         running.append(initialize_process(int(line)))
