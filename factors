@@ -17,16 +17,31 @@ def factorize_prime(n):
 
 def factorize(start, R, n):
     for i in islice(count(start), R):
+        if i < 2:
+            break;
         if (n % i == 0):
             print("{:d}={:d}*{:d}".format(n, int(n / i), i))
             break;
 
 
+def factorize_rev(SQR, n):
+    for i in range(SQR, int(SQR / 2), -1):
+        if i < 2:
+            break
+        if n % i == 0:
+            print("{:d}={:d}*{:d}".format(n, i, int(n / i)))
+            break;
+
+
 def initialize_process(n):
-    SQR = int(sqrt(n)) - 1
+    SQR = int(sqrt(n))
+    R = int((SQR - 1) / 2)
     running = []
+    running.append(multiprocessing.Process(target=factorize_rev, args=(SQR, n)))
     running.append(multiprocessing.Process(target=factorize_prime, args=(n, )))
-    running.append(multiprocessing.Process(target=factorize, args=(2, SQR, n)))
+    running.append(multiprocessing.Process(target=factorize, args=(2, R, n)))
+    running.append(multiprocessing.Process(target=factorize,
+                                           args=(R - 2, R, n)))
     return running
 
 
