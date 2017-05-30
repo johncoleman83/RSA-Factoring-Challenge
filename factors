@@ -35,13 +35,10 @@ def factorize_rev(SQR, n):
 
 def initialize_process(n):
     SQR = int(sqrt(n))
-    R = int((SQR - 1) / 2)
+    R = int(SQR - 1)
     running = []
-    running.append(multiprocessing.Process(target=factorize_rev, args=(SQR, n)))
     running.append(multiprocessing.Process(target=factorize_prime, args=(n, )))
     running.append(multiprocessing.Process(target=factorize, args=(2, R, n)))
-    running.append(multiprocessing.Process(target=factorize,
-                                           args=(R - 2, R, n)))
     return running
 
 
