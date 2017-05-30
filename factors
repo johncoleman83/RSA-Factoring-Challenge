@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-from sys import argv
+from sys import argv, maxsize
 from math import sqrt
 from time import time
 from itertools import count, islice
@@ -15,34 +15,23 @@ def factorize_prime(n):
         print("{:d}={:d}*{:d}".format(n, n, 1))
 
 
-def factorize(start, n):
-    sq = int(sqrt(n) + 2)
+def factorize(start, R, n):
     """for i in range(start, sq):"""
-    for i in islice(count(start), sq):
+    for i in islice(count(start), R):
         if (n % i == 0):
             print("{:d}={:d}*{:d}".format(n, int(n / i), i))
             break;
 
-
-def factorize_reverse(end, n):
-    for i in range(end, 0, -1):
-        if n % i == 0:
-            print("{:d}={:d}*{:d}".format(n, int(n / i), i))
-            break;
-
-
 def initialize_process(n):
-    sq = (int(sqrt(n) + 1))
-    first = multiprocessing.Process(target=factorize_reverse, args=(sq, n))
-    second = multiprocessing.Process(target=factorize_reverse,
-                                     args=(int(sq / 2), n))
-    third = multiprocessing.Process(target=factorize, args=(2, n))
-    fourth = multiprocessing.Process(target=factorize, args=(int(sq / 2), n))
-    fifth = multiprocessing.Process(target=factorize_prime, args=(n, ))
-    return [first, second, third, fourth, fifth]
+    SQR = int(sqrt(n)) - 1
+    running = []
+    running.append(multiprocessing.Process(target=factorize_prime, args=(n, )))
+    running.append(multiprocessing.Process(target=factorize, args=(2, SQR, n)))
+    return running
 
 
 def main():
+    start_t = time()
     fd = open(argv[1], 'r')
     file_lines = fd.readlines()
     fd.close()
@@ -57,11 +46,8 @@ def main():
     for sublist in running:
         for p in sublist:
             p.join()
-
-
-"""start_t = time()
-print("Time to run =", (end_t - start_t))
-end_t = time()"""
+    end_t = time()
+    print("Time to run =", (end_t - start_t))
 
 
 if __name__ == "__main__":
