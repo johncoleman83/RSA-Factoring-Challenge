@@ -56,7 +56,7 @@ def initialize_process(n):
     SQR = int(sqrt(n))
     R = int(SQR) - 1
     running = []
-    """running.append(multiprocessing.Process(target=factorize_prime, args=(n, )))"""
+    running.append(multiprocessing.Process(target=factorize_prime, args=(n, )))
     running.append(multiprocessing.Process(target=factorize_n, args=(SQR, n)))
     return running
 
@@ -69,6 +69,8 @@ def main():
     num_lines = len(file_lines)
     file_lines = sorted(file_lines, key=lambda x: len(x))
     running = []
+    """
+    NO MULTIPROCESSING LOOP
     for line in file_lines:
         n = int(line)
         SQR = int(sqrt(n))
@@ -82,7 +84,6 @@ def main():
     for jobs in running:
         for p in jobs:
             p.join()
-    """
     end_t = time()
     print("Time to run =", (end_t - start_t))
 
