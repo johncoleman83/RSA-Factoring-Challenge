@@ -46,7 +46,6 @@ def initialize_process(n):
     """sets square root, and finds factors for each integer number"""
     SQR = int(n**0.5)
     factorize_n(SQR, n)
-    print(factors_n(SQR, n))
 
 
 def main():
