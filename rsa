@@ -1,13 +1,12 @@
 #!/usr/bin/python3
 from sys import argv, maxsize
-from math import sqrt
 from time import time
 from itertools import count, islice
 import multiprocessing
 
 
 def is_prime(n):
-    return all((n % i) for i in islice(count(2), int(sqrt(n) - 1)))
+    return all((n % i) for i in islice(count(2), int(n**0.5 - 1)))
 
 
 def get_primes(start, R, n):
@@ -23,7 +22,7 @@ def prime_factorization(start, R, n):
 
 
 def initialize_process(n):
-    SQR = int(sqrt(n)) - 1
+    SQR = int(n**0.5) - 1
     p = multiprocessing.Process(target=prime_factorization, args=(2, SQR, n))
     return p
 

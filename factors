@@ -1,13 +1,11 @@
 #!/usr/bin/python3
 from sys import argv, maxsize
-from math import sqrt
-from time import time
+"""from time import time"""
 from itertools import count, islice
-import multiprocessing
 
 
 def is_prime(n):
-    return n > 1 and all((n % i) for i in islice(count(2), int(sqrt(n) - 1)))
+    return n > 1 and all((n % i) for i in islice(count(2), int(n**0.5 - 1)))
 
 
 def factors(n):
@@ -23,69 +21,40 @@ def factorize_prime(n):
 
 def factorize_n(SQR, n):
     i = 2
-    while (i < SQR):
+    found = 0
+    for i in range(2, SQR):
         if ((n % i) == 0):
             print("{:d}={:d}*{:d}".format(n, int(n / i), i))
+            found = 1
             break
-        i += 1
-    if i == SQR:
+    if not found:
         print("{:d}={:d}*{:d}".format(n, n, 1))
 
 
-def factorize(start, R, n):
-    for i in islice(count(start), R):
-        if i < 2:
-            break;
-        if (n % i == 0):
-            print("{:d}={:d}*{:d}".format(n, int(n / i), i))
-            break;
-        if (i == R):
-            print("{:d}={:d}*{:d}".format(n, n, 1))
-
-
-def factorize_rev(SQR, n):
-    for i in range(SQR, int(SQR / 2), -1):
-        if i < 2:
-            break
+def factorize_reverse(SQR, n):
+    i = SQR
+    while i > 2:
         if n % i == 0:
             print("{:d}={:d}*{:d}".format(n, i, int(n / i)))
-            break;
+            break
 
 
 def initialize_process(n):
-    SQR = int(sqrt(n))
-    R = int(SQR) - 1
-    running = []
-    running.append(multiprocessing.Process(target=factorize_prime, args=(n, )))
-    running.append(multiprocessing.Process(target=factorize_n, args=(SQR, n)))
-    return running
+    SQR = int(n**0.5)
+    factorize_n(SQR, n)
 
 
 def main():
-    start_t = time()
+    """start_t = time()"""
     fd = open(argv[1], 'r')
     file_lines = fd.readlines()
     fd.close()
     num_lines = len(file_lines)
     file_lines = sorted(file_lines, key=lambda x: len(x))
-    running = []
-    """
-    NO MULTIPROCESSING LOOP
     for line in file_lines:
-        n = int(line)
-        SQR = int(sqrt(n))
-        factorize_n(SQR, n)
-    """
-    for line in file_lines:
-        running.append(initialize_process(int(line)))
-    for jobs in running:
-        for p in jobs:
-            p.start()
-    for jobs in running:
-        for p in jobs:
-            p.join()
-    end_t = time()
-    print("Time to run =", (end_t - start_t))
+        initialize_process(int(line))
+    """end_t = time()
+    print("Time to run =", (end_t - start_t))"""
 
 
 if __name__ == "__main__":
