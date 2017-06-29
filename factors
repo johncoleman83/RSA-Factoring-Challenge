@@ -1,26 +1,37 @@
 #!/usr/bin/python3
-from sys import argv, maxsize
-"""from time import time"""
+from sys import argv
+from time import time
 from itertools import count, islice
 
-
 def is_prime(n):
+    """NOT UTILIZED"""
     return n > 1 and all((n % i) for i in islice(count(2), int(n**0.5 - 1)))
 
 
-def factors(n):
-    return set(reduce(list.__add__,
-                      ([i, n//i] for i in range(1, int(n**0.5) + 1)
-                       if n % i == 0)))
-
-
 def factorize_prime(n):
+    """NOT UTILIZED"""
     if is_prime(n):
         print("{:d}={:d}*{:d}".format(n, n, 1))
 
 
+def factorize_reverse(SQR, n):
+    """NOT UTILIZED"""
+    i = SQR
+    while i > 2:
+        if n % i == 0:
+            print("{:d}={:d}*{:d}".format(n, i, int(n / i)))
+            break
+
+
+def factors_n(SQR, n):
+    """NOT UTILIZED"""
+    l = list([n//i, i] for i in islice(count(2), int(n**0.5 - 1)) if n % i == 0)
+    """l = list([i, n//i] for i in range(1, SQR) if (n % i) == 0)"""
+    return set([item for sublist in l for item in sublist])
+
+
 def factorize_n(SQR, n):
-    i = 2
+    """finds and prints factors"""
     found = 0
     for i in range(2, SQR):
         if ((n % i) == 0):
@@ -31,21 +42,16 @@ def factorize_n(SQR, n):
         print("{:d}={:d}*{:d}".format(n, n, 1))
 
 
-def factorize_reverse(SQR, n):
-    i = SQR
-    while i > 2:
-        if n % i == 0:
-            print("{:d}={:d}*{:d}".format(n, i, int(n / i)))
-            break
-
-
 def initialize_process(n):
+    """sets square root, and finds factors for each integer number"""
     SQR = int(n**0.5)
     factorize_n(SQR, n)
+    print(factors_n(SQR, n))
 
 
 def main():
-    """start_t = time()"""
+    """main function with timer, that parses input file and finds factors"""
+    start_t = time()
     fd = open(argv[1], 'r')
     file_lines = fd.readlines()
     fd.close()
@@ -53,8 +59,8 @@ def main():
     file_lines = sorted(file_lines, key=lambda x: len(x))
     for line in file_lines:
         initialize_process(int(line))
-    """end_t = time()
-    print("Time to run =", (end_t - start_t))"""
+    end_t = time()
+    print("Time to run =", (end_t - start_t))
 
 
 if __name__ == "__main__":
