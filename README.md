@@ -8,7 +8,6 @@ This Repo has programs to crack a mini-RSA encryption challenge
 
 * __Environment:__ Ubuntu 14.04 LTS
 * __Language:__ C
-* __style:__ Holberton School Style: Betty
 
 ## The Challenges
 
